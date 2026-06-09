@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boda Bryan & Yosseline</title>
+    <!-- Fuentes elegantes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f5f2eb; 
+            color: #2c2c2c;
+            text-align: center;
+            overflow-x: hidden;
+        }
+        #welcome-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #f5f2eb; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            transition: opacity 1s ease-in-out;
+        }
+        #welcome-screen h1 { font-family: 'Alex Brush', cursive; font-size: 3.5rem; color: #1a1a1a; }
+        .btn-enter {
+            padding: 12px 35px; font-size: 0.85rem; background-color: #1a1a1a; color: #f5f2eb;
+            border: none; border-radius: 25px; cursor: pointer; letter-spacing: 3px;
+            text-transform: uppercase; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .container { max-width: 450px; margin: 0 auto; background-color: #ffffff; min-height: 100vh; padding-bottom: 80px; position: relative; }
+        section { padding: 45px 25px; position: relative; }
+        
+        /* Portada */
+        .hero {
+            position: relative; height: 480px; display: flex; flex-direction: column;
+            justify-content: flex-end; padding-bottom: 40px;
+            background-image: url('foto_portada.jpg'); 
+            background-size: cover; background-position: center;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.8) 100%);
+        }
+        .hero-content { position: relative; z-index: 2; color: #f5f2eb; }
+        .hero h2 { font-family: 'Alex Brush', cursive; font-size: 4rem; line-height: 1.1; }
+        .hero p.subtitle { font-size: 0.9rem; letter-spacing: 5px; text-transform: uppercase; color: #d8d0c0; }
+
+        /* Cuenta Regresiva */
+        .countdown { display: flex; justify-content: center; gap: 10px; margin-top: 25px; }
+        .time-block { background: #faf8f5; border: 1px solid #e3ded4; padding: 12px 5px; border-radius: 8px; min-width: 75px; }
+        .time-block span { display: block; font-size: 1.5rem; font-weight: 600; color: #1a1a1a; }
+        .time-block label { font-size: 0.65rem; text-transform: uppercase; color: #777; letter-spacing: 1px; }
+
+        .section-title { font-size: 1.2rem; letter-spacing: 3px; color: #1a1a1a; margin-bottom: 25px; text-transform: uppercase; }
+        
+        /* Sección de Fotos con Adornos Flotantes */
+        .gallery-section { background-color: #f5f2eb; position: relative; padding-top: 60px; }
+        .decor-palomas { position: absolute; top: 10px; left: 10px; width: 70px; opacity: 0.7; }
+        .decor-anillos { position: absolute; bottom: 10px; left: 10px; width: 60px; opacity: 0.7; }
+        .decor-iglesia { position: absolute; bottom: 160px; right: 80px; width: 65px; opacity: 0.7; z-index: 5; }
+        .decor-arco { position: absolute; bottom: 15px; right: 10px; width: 150px; opacity: 0.8; }
+        
+        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; position: relative; z-index: 2; }
+        .gallery-item { width: 100%; height: 150px; object-fit: cover; border-radius: 2px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .gallery-wide { grid-column: span 1; height: 180px; width: 90%; }
+        .gallery-right { grid-column: span 1; height: 260px; margin-top: 40px; width: 95%; margin-left: auto; }
+
+        /* Cronograma con sus dibujos de Flores y Mesa */
+        .cronograma-section { position: relative; background-color: #f5f2eb; padding-top: 40px; }
+        .decor-ramo { position: absolute; top: 10px; right: 10px; width: 90px; opacity: 0.7; }
+        .decor-mesa { position: absolute; bottom: 20px; right: 15px; width: 140px; opacity: 0.7; }
+        .timeline { text-align: left; margin: 30px 10px; max-width: 65%; position: relative; z-index: 2; }
+        .timeline-item { display: flex; flex-direction: column; padding: 10px 0; border-bottom: 1px solid #dcd7cc; }
+        .timeline-time { font-weight: 600; font-size: 0.85rem; color: #1a1a1a; margin-bottom: 2px; }
+        .timeline-desc { color: #555; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; }
+
+        /* Secciones Oscuras */
+        .dark-section { background-color: #000000; color: #ffffff; padding: 50px 30px; position: relative; }
+        .dark-section .section-title { color: #ffffff; font-size: 1.5rem; }
+        .dark-section p { font-size: 0.85rem; color: #e0e0e0; letter-spacing: 1px; line-height: 1.8; margin-bottom: 15px; }
+        .decor-pastel { position: absolute; top: 20px; right: 20px; width: 60px; opacity: 0.6; }
+
+        .btn-action {
+            display: inline-block; padding: 12px 30px; background-color: #ffffff; color: #000000;
+            text-decoration: none; border-radius: 0px; font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 2px; font-weight: 500; margin-top: 15px; border: 1px solid #ffffff; transition: all 0.3s;
+        }
+        .btn-action:hover { background-color: transparent; color: #ffffff; }
+        .btn-whatsapp { background-color: #25D366; color: white; border-color: #25D366; font-size: 0.8rem; }
+        .btn-whatsapp:hover { background-color: transparent; color: #25D366; }
+
+        .foto-final-img { width: 80%; height: auto; max-height: 300px; object-fit: cover; margin: 25px auto 0 auto; display: block; }
+
+        #music-player {
+            position: fixed; bottom: 25px; right: 25px; background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e3ded4; padding: 8px 14px; border-radius: 30px; display: flex; align-items: center; gap: 10px; z-index: 1000;
+        }
+        .player-btn { background: #1a1a1a; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 0.7rem; }
+        .music-title { font-size: 0.7rem; color: #444; }
+    </style>
+</head>
+<body>
+
+    <!-- BIENVENIDA -->
+    <div id="welcome-screen">
+        <h1 style="font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; color: #777;">Nuestra Boda</h1>
+        <h1 style="margin-top: 10px;">Bryan & Yosseline</h1>
+        <button class="btn-enter" onclick="startInvitation()">Abrir Invitación</button>
+    </div>
+
+    <div class="container">
+        
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-content">
+                <h2 style="font-size: 3.5rem;">Bryan & Yosseline</h2>
+            </div>
+        </section>
+
+        <!-- CUENTA REGRESIVA -->
+        <section style="background-color: #ffffff;">
+            <div class="countdown">
+                <div class="time-block"><span id="days">00</span><label>Días</label></div>
+                <div class="time-block"><span id="hours">00</span><label>Horas</label></div>
+                <div class="time-block"><span id="minutes">00</span><label>Min</label></div>
+                <div class="time-block"><span id="seconds">00</span><label>Seg</label></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE FOTOS -->
+        <section class="gallery-section">
+            <img src="decor_palomas.png" class="decor-palomas" alt="">
+            <img src="decor_anillos.png" class="decor-anillos" alt="">
+            <img src="decor_iglesia.png" class="decor-iglesia" alt="">
+            <img src="decor_arco.png" class="decor-arco" alt="">
+
+            <div class="gallery-grid">
+                <div style="grid-column: span 1; display: flex; flex-direction: column; gap: 15px; align-items: flex-start;">
+                    <img src="foto1.pjg.jpeg" class="gallery-item gallery-wide" alt="">
+                    <img src="foto2.jpg.jpeg" class="gallery-item" style="width: 85%; height: 130px; margin-left: 20px;" alt="">
+                </div>
+                <img src="foto3.jpg.jpeg" class="gallery-item gallery-right" alt="">
+            </div>
+        </section>
+
+        <!-- CRONOGRAMA -->
+        <section class="cronograma-section">
+            <img src="decor_ramo.png" class="decor-ramo" alt="">
+            <img src="decor_mesa.png" class="decor-mesa" alt="">
+
+            <h3 class="section-title" style="text-align: left; font-size: 1.6rem; font-weight: 300; font-family: 'Montserrat', sans-serif;">CRONOGRAMA<br>DEL EVENTO</h3>
+            
+            <div class="timeline">
+                <div class="timeline-item"><span class="timeline-time">7:00 PM</span><span class="timeline-desc">Recepción y Bienvenida</span></div>
+                <div class="timeline-item"><span class="timeline-time">8:00 PM</span><span class="timeline-desc">Cena Formal</span></div>
+                <div class="timeline-item"><span class="timeline-time">9:00 PM</span><span class="timeline-desc">Brindis y Primer Baile</span></div>
+                <div class="timeline-item"><span class="timeline-time">10:00 PM</span><span class="timeline-desc">Apertura del Baile</span></div>
+                <div class="timeline-item"><span class="timeline-time">11:00 PM</span><span class="timeline-desc">Banda Norteña</span></div>
+            </div>
+        </section>
+
+        <!-- UBICACIÓN -->
+        <section class="dark-section">
+            <h3 class="section-title">DÍA DEL EVENTO</h3>
+            <p style="color: #b3966a; font-weight: 600;">28 DE AGOSTO DE 2026 | 7:00 PM</p>
+            <p style="margin-top: 15px;"><strong>LUGAR DEL EVENTO:</strong><br>JARDÍN Y TERRAZA PUERTA AL PARAÍSO</p>
+            <p><strong>DIRECCIÓN:</strong><br>C. ESPAÑA 8451, JUÁREZ, 22040 TIJUANA, B.C.</p>
+            <a href="https://maps.google.com/?q=Jardin+Puerta+al+Paraiso+Tijuana" target="_blank" class="btn-action">Ver ubicación en mapa</a>
+        </section>
+
+        <!-- RSVP -->
+        <section class="dark-section" style="border-top: 1px solid #1a1a1a;">
+            <img src="decor_pastel.png" class="decor-pastel" alt="">
+            <h3 class="section-title">RSVP</h3>
+            <p style="font-size: 0.75rem; color: #aaa;">CONFIRMACIÓN DE ASISTENCIA</p>
+            <p style="font-size: 0.8rem; margin: 15px 0;">PARA NOSOTROS ES MUY IMPORTANTE COMPARTIR ESTE DÍA CONTIGO. POR FAVOR AYÚDANOS A CONFIRMAR TU ASISTENCIA ANTES DEL DIA 10 DE AGOSTO DE 2026.</p>
+            <a href="https://wa.me/521234567890?text=Hola!%20Confirmo%20asistencia%20a%20la%20boda%20de%20Bryan%20y%20Yosseline" target="_blank" class="btn-action btn-whatsapp">Por favor de confirmar aquí</a>
+        </section>
+
+        <!-- FINAL -->
+        <section style="background-color: #f5f2eb;">
+            <h3 style="font-family: 'Alex Brush', cursive; font-size: 2.2rem; font-weight: 400;">Esperamos contar con tu presencia</h3>
+            <img src="foto_final.jpg.jpeg" class="foto-final-img" alt="">
+        </section>
+
+    </div>
+
+    <!-- REPRODUCTOR -->
+    <div id="music-player" style="display: none;">
+        <span class="music-title">🎵 Canción de Fondo</span>
+        <button class="player-btn" id="play-pause-btn" onclick="toggleMusic()">❚❚</button>
+    </div>
+
+    <audio id="bg-music" loop><source src="cancion.mp3" type="audio/mpeg"></audio>
+
+    <script>
+        const music = document.getElementById('bg-music');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+
+        function startInvitation() {
+            document.getElementById('welcome-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('welcome-screen').style.display = 'none';
+                document.getElementById('music-player').style.display = 'flex';
+            }, 1000);
+            music.play().catch(e => console.log("Audio diferido"));
+        }
+
+        function toggleMusic() {
+            if (music.paused) { music.play(); playPauseBtn.textContent = '❚❚'; }
+            else { music.pause(); playPauseBtn.textContent = '▶'; }
+        }
+
+        const eventDate = new Date(2026, 7, 28, 19, 0, 0).getTime();
+        setInterval(function() {
+            const now = new Date().getTime(); const distance = eventDate - now;
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("days").textContent = days < 10 ? "0" + days : days;
+            document.getElementById("hours").textContent = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").textContent = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").textContent = seconds < 10 ? "0" + seconds : seconds;
+        }, 1000);
+    </script>
+</body>
+</html>
