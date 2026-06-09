@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boda Yoseli & Bryan</title>
-    <!-- Fuentes elegantes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,13 +23,26 @@
             justify-content: center; align-items: center; z-index: 9999;
             transition: opacity 1s ease-in-out;
         }
+        
+        /* Estilo de los nombres principales */
         .names-cursive { 
             font-family: 'Alex Brush', cursive; 
-            font-size: 3.8rem; 
+            font-size: 3.4rem; 
             color: #1a1a1a;
             font-weight: 400;
             line-height: 1.2;
         }
+        
+        /* El símbolo & estilo "8 en cursiva" como el letrero de madera */
+        .ampersand {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            color: #b3966a; /* Tono dorado elegante */
+            display: inline-block;
+            margin: 0 8px;
+            vertical-align: middle;
+        }
+        
         .btn-enter {
             padding: 12px 35px; font-size: 0.85rem; background-color: #1a1a1a; color: #f5f2eb;
             border: none; border-radius: 25px; cursor: pointer; letter-spacing: 3px;
@@ -51,7 +63,8 @@
             background: linear-gradient(to bottom, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.8) 100%);
         }
         .hero-content { position: relative; z-index: 2; color: #f5f2eb; }
-        .hero .names-cursive { color: #f5f2eb; font-size: 4.2rem; }
+        .hero .names-cursive { color: #f5f2eb; font-size: 3.8rem; }
+        .hero .ampersand { color: #f5f2eb; font-size: 4.2rem; }
 
         /* Cuenta Regresiva */
         .countdown { display: flex; justify-content: center; gap: 10px; margin-top: 25px; }
@@ -61,61 +74,52 @@
 
         .section-title { font-size: 1.2rem; letter-spacing: 3px; color: #1a1a1a; margin-bottom: 25px; text-transform: uppercase; }
         
-        /* Sección de Fotos */
-        .gallery-section { background-color: #f5f2eb; position: relative; padding-top: 60px; padding-bottom: 60px; }
-        
-        .decor-palomas { position: absolute; top: 15px; left: 15px; width: 65px; opacity: 0.8; z-index: 3; }
-        .decor-anillos { position: absolute; bottom: 15px; left: 15px; width: 55px; opacity: 0.8; z-index: 3; }
-        .decor-iglesia { position: absolute; bottom: 170px; right: 75px; width: 60px; opacity: 0.8; z-index: 3; }
-        
+        /* Sección de Fotos Modificada (Sin imágenes rotas ocultas) */
+        .gallery-section { background-color: #f5f2eb; padding-top: 40px; padding-bottom: 40px; }
         .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; position: relative; z-index: 2; }
-        .gallery-item { width: 100%; height: 150px; object-fit: cover; border-radius: 2px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .gallery-wide { grid-column: span 1; height: 180px; width: 90%; }
-        .gallery-right { grid-column: span 1; height: 260px; margin-top: 40px; width: 95%; margin-left: auto; }
+        .gallery-item { width: 100%; height: 150px; object-fit: cover; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .gallery-wide { grid-column: span 1; height: 180px; width: 100%; }
+        .gallery-right { grid-column: span 1; height: 260px; margin-top: 40px; width: 100%; }
 
         /* Cronograma */
-        .cronograma-section { position: relative; background-color: #f5f2eb; padding-top: 40px; }
-        .decor-ramo { position: absolute; top: 15px; right: 15px; width: 85px; opacity: 0.8; z-index: 3; }
-        .decor-mesa { position: absolute; bottom: 25px; right: 15px; width: 130px; opacity: 0.8; z-index: 3; }
-        
-        .timeline { text-align: left; margin: 30px 10px; max-width: 65%; position: relative; z-index: 2; }
-        .timeline-item { display: flex; flex-direction: column; padding: 10px 0; border-bottom: 1px solid #dcd7cc; }
-        .timeline-time { font-weight: 600; font-size: 0.85rem; color: #1a1a1a; margin-bottom: 2px; }
-        .timeline-desc { color: #555; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; }
+        .cronograma-section { background-color: #ffffff; padding-top: 40px; }
+        .timeline { text-align: left; margin: 30px auto; max-width: 85%; position: relative; z-index: 2; }
+        .timeline-item { display: flex; flex-direction: column; padding: 12px 0; border-bottom: 1px solid #e3ded4; }
+        .timeline-time { font-weight: 600; font-size: 0.9rem; color: #b3966a; margin-bottom: 2px; }
+        .timeline-desc { color: #444; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; }
 
         /* Secciones Oscuras */
         .dark-section { background-color: #000000; color: #ffffff; padding: 50px 30px; position: relative; }
-        .dark-section .section-title { color: #ffffff; font-size: 1.5rem; }
+        .dark-section .section-title { color: #ffffff; font-size: 1.4rem; }
         .dark-section p { font-size: 0.85rem; color: #e0e0e0; letter-spacing: 1px; line-height: 1.8; margin-bottom: 15px; }
-        .decor-pastel { position: absolute; top: 25px; right: 25px; width: 55px; opacity: 0.7; z-index: 3; }
 
         .btn-action {
-            display: inline-block; padding: 12px 30px; background-color: #ffffff; color: #000000;
+            display: inline-block; padding: 14px 30px; background-color: #ffffff; color: #000000;
             text-decoration: none; border-radius: 0px; font-size: 0.75rem; text-transform: uppercase;
-            letter-spacing: 2px; font-weight: 500; margin-top: 15px; border: 1px solid #ffffff; transition: all 0.3s;
+            letter-spacing: 2px; font-weight: 600; margin-top: 15px; border: 1px solid #ffffff; transition: all 0.3s;
+            width: 100%; max-width: 280px;
         }
         .btn-action:hover { background-color: transparent; color: #ffffff; }
         
-        /* Botón RSVP Elegante Blanco y Dorado */
+        /* Botón RSVP Arreglado (Dorado en armonía con el diseño, adiós verde brillante) */
         .btn-rsvp { 
-            background-color: #ffffff; 
-            color: #1a1a1a; 
-            border: 2px solid #b3966a; 
-            font-size: 0.8rem; 
-            font-weight: 600;
-            box-shadow: 0 4px 10px rgba(179, 150, 106, 0.2);
-        }
-        .btn-rsvp:hover { 
             background-color: #b3966a; 
             color: #ffffff; 
-            border-color: #b3966a;
+            border: 1px solid #b3966a; 
+            box-shadow: 0 4px 15px rgba(179, 150, 106, 0.3);
+        }
+        .btn-rsvp:hover { 
+            background-color: #ffffff; 
+            color: #b3966a; 
+            border-color: #ffffff;
         }
 
-        .foto-final-img { width: 80%; height: auto; max-height: 300px; object-fit: cover; margin: 25px auto 0 auto; display: block; }
+        .foto-final-img { width: 85%; height: auto; max-height: 300px; object-fit: cover; margin: 25px auto 0 auto; display: block; border-radius: 4px; }
 
         #music-player {
             position: fixed; bottom: 25px; right: 25px; background: rgba(255, 255, 255, 0.95);
             border: 1px solid #e3ded4; padding: 8px 14px; border-radius: 30px; display: flex; align-items: center; gap: 10px; z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .player-btn { background: #1a1a1a; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 0.7rem; }
         .music-title { font-size: 0.7rem; color: #444; }
@@ -123,24 +127,21 @@
 </head>
 <body>
 
-    <!-- BIENVENIDA -->
     <div id="welcome-screen">
-        <h2 style="font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; color: #777; margin-bottom: 5px;">Nuestra Boda</h2>
-        <div class="names-cursive">Yoseli & Bryan</div>
+        <h2 style="font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; color: #777; margin-bottom: 10px;">Nuestra Boda</h2>
+        <div class="names-cursive">Yoseli <span class="ampersand">&</span> Bryan</div>
         <button class="btn-enter" onclick="startInvitation()">Abrir Invitación</button>
     </div>
 
     <div class="container">
         
-        <!-- HERO (PORTADA) -->
         <section class="hero">
             <div class="hero-content">
-                <div class="names-cursive">Yoseli & Bryan</div>
+                <div class="names-cursive">Yoseli <span class="ampersand">&</span> Bryan</div>
             </div>
         </section>
 
-        <!-- CUENTA REGRESIVA -->
-        <section style="background-color: #ffffff;">
+        <section style="background-color: #ffffff; padding: 30px 25px;">
             <div class="countdown">
                 <div class="time-block"><span id="days">00</span><label>Días</label></div>
                 <div class="time-block"><span id="hours">00</span><label>Horas</label></div>
@@ -149,27 +150,18 @@
             </div>
         </section>
 
-        <!-- SECCIÓN DE FOTOS -->
         <section class="gallery-section">
-            <img src="decor_palomas.png" class="decor-palomas" alt="">
-            <img src="decor_anillos.png" class="decor-anillos" alt="">
-            <img src="decor_iglesia.png" class="decor-iglesia" alt="">
-
             <div class="gallery-grid">
-                <div style="grid-column: span 1; display: flex; flex-direction: column; gap: 15px; align-items: flex-start;">
-                    <img src="foto1.pjg.jpeg" class="gallery-item gallery-wide" alt="Bryan">
-                    <img src="foto2.jpg.jpeg" class="gallery-item" style="width: 85%; height: 130px; margin-left: 20px;" alt="Yoseli">
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <img src="foto1.jpg.jpeg" class="gallery-item gallery-wide" alt="Yoseli y Bryan">
+                    <img src="foto2.jpg.jpeg" class="gallery-item" style="height: 130px;" alt="Yoseli y Bryan">
                 </div>
-                <img src="foto3.jpg.jpeg" class="gallery-item gallery-right" alt="Juntos">
+                <img src="foto3.jpg.jpeg" class="gallery-item gallery-right" alt="Yoseli y Bryan">
             </div>
         </section>
 
-        <!-- CRONOGRAMA -->
         <section class="cronograma-section">
-            <img src="decor_ramo.png" class="decor-ramo" alt="">
-            <img src="decor_mesa.png" class="decor-mesa" alt="">
-
-            <h3 class="section-title" style="text-align: left; font-size: 1.6rem; font-weight: 300; font-family: 'Montserrat', sans-serif;">CRONOGRAMA<br>DEL EVENTO</h3>
+            <h3 class="section-title" style="text-align: center; font-size: 1.4rem; font-weight: 400; letter-spacing: 4px;">CRONOGRAMA DEL EVENTO</h3>
             
             <div class="timeline">
                 <div class="timeline-item"><span class="timeline-time">7:00 PM</span><span class="timeline-desc">Recepción y Bienvenida</span></div>
@@ -180,33 +172,28 @@
             </div>
         </section>
 
-        <!-- UBICACIÓN -->
         <section class="dark-section">
             <h3 class="section-title">DÍA DEL EVENTO</h3>
-            <p style="color: #b3966a; font-weight: 600;">28 DE AGOSTO DE 2026 | 7:00 PM</p>
+            <p style="color: #b3966a; font-weight: 600; letter-spacing: 2px;">28 DE AGOSTO DE 2026 | 7:00 PM</p>
             <p style="margin-top: 15px;"><strong>LUGAR DEL EVENTO:</strong><br>JARDÍN Y TERRAZA PUERTA AL PARAÍSO</p>
             <p><strong>DIRECCIÓN:</strong><br>C. ESPAÑA 8451, JUÁREZ, 22040 TIJUANA, B.C.</p>
-            <a href="https://maps.google.com/?q=C.+España+8451,+Juárez,+22040+Tijuana,+B.C." target="_blank" class="btn-action">Ver ubicación en mapa</a>
+            <a href="https://maps.google.com/?q=Jardin+y+Terraza+Puerta+al+Paraiso+Tijuana" target="_blank" class="btn-action">Ver ubicación en mapa</a>
         </section>
 
-        <!-- RSVP (FORMULARIO GOOGLE) -->
-        <section class="dark-section" style="border-top: 1px solid #1a1a1a;">
-            <img src="decor_pastel.png" class="decor-pastel" alt="">
+        <section class="dark-section" style="border-top: 1px solid #222;">
             <h3 class="section-title">RSVP</h3>
-            <p style="font-size: 0.75rem; color: #aaa;">CONFIRMACIÓN DE ASISTENCIA</p>
-            <p style="font-size: 0.8rem; margin: 15px 0;">PARA NOSOTROS ES MUY IMPORTANTE COMPARTIR ESTE DÍA CONTIGO. POR FAVOR AYÚDANOS A CONFIRMAR TU ASISTENCIA ANTES DEL DIA 10 DE AGOSTO DE 2026.</p>
+            <p style="font-size: 0.75rem; color: #b3966a; letter-spacing: 2px;">CONFIRMACIÓN DE ASISTENCIA</p>
+            <p style="font-size: 0.8rem; margin: 20px 0; color: #d5d5d5;">PARA NOSOTROS ES MUY IMPORTANTE COMPARTIR ESTE DÍA CONTIGO. POR FAVOR AYÚDANOS A CONFIRMAR TU ASISTENCIA ANTES DEL DÍA 10 DE AGOSTO DE 2026.</p>
             <a href="https://forms.gle/5vfDefBzx2xcrLyz9" target="_blank" class="btn-action btn-rsvp">Por favor de confirmar aquí</a>
         </section>
 
-        <!-- FINAL -->
-        <section style="background-color: #f5f2eb;">
-            <h3 style="font-family: 'Alex Brush', cursive; font-size: 2.2rem; font-weight: 400;">Esperamos contar con tu presencia</h3>
-            <img src="foto_final.jpg.jpeg" class="foto-final-img" alt="Final">
+        <section style="background-color: #f5f2eb; padding-bottom: 50px;">
+            <h3 style="font-family: 'Alex Brush', cursive; font-size: 2.5rem; font-weight: 400; color: #1a1a1a;">Esperamos contar con tu presencia</h3>
+            <img src="foto_final.jpg.jpeg" class="foto-final-img" alt="Yoseli & Bryan">
         </section>
 
     </div>
 
-    <!-- REPRODUCTOR -->
     <div id="music-player" style="display: none;">
         <span class="music-title">🎵 Canción de Fondo</span>
         <button class="player-btn" id="play-pause-btn" onclick="toggleMusic()">❚❚</button>
@@ -224,7 +211,7 @@
                 document.getElementById('welcome-screen').style.display = 'none';
                 document.getElementById('music-player').style.display = 'flex';
             }, 1000);
-            music.play().catch(e => console.log("Audio diferido"));
+            music.play().catch(e => console.log("Audio diferido por políticas del navegador"));
         }
 
         function toggleMusic() {
