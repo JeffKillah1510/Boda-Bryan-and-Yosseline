@@ -73,29 +73,31 @@
         .time-block span { display: block; font-size: 1.5rem; font-weight: 600; color: #1a1a1a; }
         .time-block label { font-size: 0.65rem; text-transform: uppercase; color: #777; letter-spacing: 1px; }
 
-        /* NUEVO: Efecto de desvanecimiento suave para asegurar que las letras SIEMPRE salgan */
+        /* NUEVO EFECTO MÁQUINA DE ESCRIBIR CSS SEGURO */
+        .typing-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
         .typing-container {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 500;
             color: #b3966a;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 15px;
-            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
         }
         
-        .char {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(10px);
-            animation: aparecerLetra 0.5s forwards;
+        /* Esta clase inicia la animación de las letras al abrirse la invitación */
+        .start-typing {
+            animation: teclearLetras 2.5s steps(30) forwards;
         }
 
-        @keyframes aparecerLetra {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes teclearLetras {
+            from { width: 0; }
+            to { width: 100%; }
         }
 
         /* Botón de Calendario */
@@ -105,7 +107,7 @@
             justify-content: center;
             gap: 8px;
             margin-top: 25px;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: 1px solid #b3966a;
             background-color: transparent;
             color: #b3966a;
@@ -117,6 +119,8 @@
             border-radius: 4px;
             transition: all 0.3s ease;
             text-decoration: none;
+            width: 100%;
+            max-width: 280px;
         }
         .btn-calendar:hover {
             background-color: #b3966a;
@@ -193,7 +197,10 @@
         </section>
 
         <section class="countdown-section">
-            <div class="typing-container" id="animated-date">Viernes 28 de Agosto 2026</div>
+            
+            <div class="typing-wrapper">
+                <div class="typing-container" id="animated-date">Viernes 28 de Agosto 2026</div>
+            </div>
 
             <div class="countdown">
                 <div class="time-block"><span id="days">00</span><label>Días</label></div>
@@ -263,27 +270,14 @@
         const music = document.getElementById('bg-music');
         const playPauseBtn = document.getElementById('play-pause-btn');
 
-        // Modificado: Ahora separa el texto de manera segura e inmediata
-        function setupTypewriter() {
-            const container = document.getElementById('animated-date');
-            const text = container.textContent;
-            container.textContent = '';
-            
-            for (let i = 0; i < text.length; i++) {
-                const span = document.createElement('span');
-                span.textContent = text[i] === ' ' ? '\u00A0' : text[i];
-                span.className = 'char';
-                // Añadimos el retraso directamente por CSS inline para que no falle
-                span.style.animationDelay = (i * 0.08) + 's';
-                container.appendChild(span);
-            }
-        }
-
         function startInvitation() {
             document.getElementById('welcome-screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('welcome-screen').style.display = 'none';
                 document.getElementById('music-player').style.display = 'flex';
+                
+                // Activa la animación del texto de forma segura al abrirse
+                document.getElementById('animated-date').classList.add('start-typing');
             }, 1000);
             music.play().catch(e => console.log("Audio diferido por políticas del navegador"));
         }
@@ -292,9 +286,6 @@
             if (music.paused) { music.play(); playPauseBtn.textContent = '❚❚'; }
             else { music.pause(); playPauseBtn.textContent = '▶'; }
         }
-
-        // Ejecutar separación de letras de inmediato al cargar la estructura
-        setupTypewriter();
 
         const eventDate = new Date(2026, 7, 28, 19, 0, 0).getTime();
         setInterval(function() {
