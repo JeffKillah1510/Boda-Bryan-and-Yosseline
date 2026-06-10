@@ -1,3 +1,6 @@
+Aquí tienes el código completo, limpio y listo para que lo uses. Ya integré el menú desplegable interactivo con las opciones para Android (Google Calendar) y iPhone (Apple iCal), ajusté los estilos para que se desplieguen de forma elegante y corregí el efecto de máquina de escribir de la fecha:
+
+HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -78,7 +81,7 @@
             display: flex;
             justify-content: center;
             margin-bottom: 15px;
-            min-height: 25px; /* Evita saltos de línea molestos al cargar */
+            min-height: 25px;
         }
         .typing-container {
             font-size: 1.05rem;
@@ -92,7 +95,6 @@
             display: inline-block;
         }
         
-        /* Inicia la animación al abrir la invitación */
         .start-typing {
             animation: teclearLetras 2.5s steps(35) forwards;
         }
@@ -102,13 +104,16 @@
             to { width: 100%; }
         }
 
-        /* Botón de Calendario Corregido */
+        /* CONTENEDOR DEL MENÚ DESPLEGABLE DEL CALENDARIO */
         .calendar-wrapper {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             width: 100%;
             margin-top: 25px;
+            position: relative;
         }
+        
         .btn-calendar {
             display: inline-flex;
             align-items: center;
@@ -129,9 +134,59 @@
             width: 100%;
             max-width: 280px;
         }
+        
         .btn-calendar:hover {
             background-color: #b3966a;
             color: #ffffff;
+        }
+
+        /* Estilos de la lista de opciones */
+        .calendar-options-menu {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            max-width: 280px;
+            background-color: #faf8f5;
+            border: 1px solid #b3966a;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            overflow: hidden;
+            animation: slideDown 0.3s ease;
+            z-index: 10;
+        }
+
+        /* Clase dinámica para mostrar el menú */
+        .calendar-options-menu.show {
+            display: flex;
+        }
+
+        .calendar-options-menu a {
+            padding: 14px;
+            color: #2c2c2c;
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #e3ded4;
+            transition: background 0.2s;
+            display: block;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .calendar-options-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .calendar-options-menu a:hover {
+            background-color: #e3ded4;
+            color: #1a1a1a;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .section-title { font-size: 1.2rem; letter-spacing: 3px; color: #1a1a1a; margin-bottom: 25px; text-transform: uppercase; }
@@ -191,7 +246,7 @@
 
     <div id="welcome-screen">
         <h2 style="font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; color: #777; margin-bottom: 10px;">Nuestra Boda</h2>
-        <div class="names-cursive">Yoseli<span class="ampersand">&</span>Bryan</div>
+        <div class="names-cursive">Yoseli<span class="ampersand">&amp;</span>Bryan</div>
         <button class="btn-enter" onclick="startInvitation()">Abrir Invitación</button>
     </div>
 
@@ -199,7 +254,7 @@
         
         <section class="hero">
             <div class="hero-content">
-                <div class="names-cursive">Yoseli<span class="ampersand">&</span>Bryan</div>
+                <div class="names-cursive">Yoseli<span class="ampersand">&amp;</span>Bryan</div>
             </div>
         </section>
 
@@ -217,10 +272,21 @@
             </div>
 
             <div class="calendar-wrapper">
-                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+Yoseli+%26+Bryan&dates=20260828T190000/20260829T020000&details=¡Acompáñanos+a+celebrar+nuestra+boda!+Por+favor+confirma+tu+asistencia.&location=Jardín+y+Terraza+Puerta+al+Paraíso,+C.+España+8451,+Juárez,+22040+Tijuana,+B.C.&sf=true&output=xml" 
-                   target="_blank" class="btn-calendar">
+                <button class="btn-calendar" onclick="toggleCalendarMenu(event)">
                     📅 Agregar al Calendario
-                </a>
+                </button>
+                
+                <div id="calendar-options" class="calendar-options-menu">
+                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Boda+Yoseli+%26+Bryan&amp;dates=20260828T190000/20260829T020000&amp;details=¡Acompáñanos+a+celebrar+nuestra+boda!+Por+favor+confirma+tu+asistencia.&amp;location=Jardín+y+Terraza+Puerta+al+Paraíso,+C.+España+8451,+Juárez,+22040+Tijuana,+B.C.&amp;sf=true&amp;output=xml" 
+                       target="_blank">
+                       🤖 Google Calendar (Android)
+                    </a>
+                    
+                    <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0AURL:https%3A%2F%2Fcalendar.google.com%0ADTSTART:20260828T190000%0ADTEND:20260829T020000%0ASUMMARY:Boda%20Yoseli%20%26%20Bryan%0ADESCRIPTION:%C2%A1Acomp%C3%A1%C3%B1anos%20a%20celebrar%20nuestra%20boda%21%0ALOCATION:Jard%C3%ADn%20y%20Terraza%20Puerta%20al%20Para%C3%ADso%2C%20C.%20Espa%C3%B1a%208451%2C%20Ju%C3%A1rez%2C%2022040%20Tijuana%2C%20B.C.%0AEND:VEVENT%0AEND:VCALENDAR" 
+                       download="Boda_Yoseli_y_Bryan.ics">
+                       🍏 Apple Calendar (iPhone)
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -263,7 +329,7 @@
 
         <section style="background-color: #f5f2eb; padding-bottom: 50px;">
             <h3 style="font-family: 'Alex Brush', cursive; font-size: 2.5rem; font-weight: 400; color: #1a1a1a;">Esperamos contar con tu presencia</h3>
-            <img src="foto_final.jpg.jpeg" class="foto-final-img" alt="Yoseli & Bryan">
+            <img src="foto_final.jpg.jpeg" class="foto-final-img" alt="Yoseli &amp; Bryan">
         </section>
 
     </div>
@@ -284,8 +350,6 @@
             setTimeout(() => {
                 document.getElementById('welcome-screen').style.display = 'none';
                 document.getElementById('music-player').style.display = 'flex';
-                
-                // Activa la animación del texto correctamente al abrirse
                 document.getElementById('animated-date').classList.add('start-typing');
             }, 1000);
             music.play().catch(e => console.log("Audio diferido por políticas del navegador"));
@@ -294,6 +358,26 @@
         function toggleMusic() {
             if (music.paused) { music.play(); playPauseBtn.textContent = '❚❚'; }
             else { music.pause(); playPauseBtn.textContent = '▶'; }
+        }
+
+        // LÓGICA DEL MENÚ DE CALENDARIO
+        function toggleCalendarMenu(event) {
+            event.stopPropagation(); // Evita que el clic cierre el menú inmediatamente
+            const menu = document.getElementById('calendar-options');
+            menu.classList.toggle('show');
+        }
+
+        // Cierra el menú automáticamente si hacen clic fuera de él
+        window.onclick = function(event) {
+            if (!event.target.matches('.btn-calendar')) {
+                const dropdowns = document.getElementsByClassName("calendar-options-menu");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    const openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
         }
 
         const eventDate = new Date(2026, 7, 28, 19, 0, 0).getTime();
