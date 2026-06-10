@@ -73,11 +73,12 @@
         .time-block span { display: block; font-size: 1.5rem; font-weight: 600; color: #1a1a1a; }
         .time-block label { font-size: 0.65rem; text-transform: uppercase; color: #777; letter-spacing: 1px; }
 
-        /* NUEVO EFECTO MÁQUINA DE ESCRIBIR CSS SEGURO */
+        /* EFECTO MÁQUINA DE ESCRIBIR CORREGIDO */
         .typing-wrapper {
             display: flex;
             justify-content: center;
             margin-bottom: 15px;
+            min-height: 25px; /* Evita saltos de línea molestos al cargar */
         }
         .typing-container {
             font-size: 1.05rem;
@@ -88,11 +89,12 @@
             white-space: nowrap;
             overflow: hidden;
             width: 0;
+            display: inline-block;
         }
         
-        /* Esta clase inicia la animación de las letras al abrirse la invitación */
+        /* Inicia la animación al abrir la invitación */
         .start-typing {
-            animation: teclearLetras 2.5s steps(30) forwards;
+            animation: teclearLetras 2.5s steps(35) forwards;
         }
 
         @keyframes teclearLetras {
@@ -100,13 +102,18 @@
             to { width: 100%; }
         }
 
-        /* Botón de Calendario */
+        /* Botón de Calendario Corregido */
+        .calendar-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 25px;
+        }
         .btn-calendar {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-top: 25px;
             padding: 12px 20px;
             border: 1px solid #b3966a;
             background-color: transparent;
@@ -199,7 +206,7 @@
         <section class="countdown-section">
             
             <div class="typing-wrapper">
-                <div class="typing-container" id="animated-date">Viernes 28 de Agosto 2026</div>
+                <div class="typing-container" id="animated-date">Viernes 28 de Agosto de 2026</div>
             </div>
 
             <div class="countdown">
@@ -209,10 +216,12 @@
                 <div class="time-block"><span id="seconds">00</span><label>Seg</label></div>
             </div>
 
-            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+Yoseli+%26+Bryan&dates=20260828T190000/20260829T020000&details=¡Acompáñanos+a+celebrar+nuestra+boda!+Por+favor+confirma+tu+asistencia.&location=Jardín+y+Terraza+Puerta+al+Paraíso,+C.+España+8451,+Juárez,+22040+Tijuana,+B.C.&sf=true&output=xml" 
-               target="_blank" class="btn-calendar">
-                📅 Agregar al Calendario
-            </a>
+            <div class="calendar-wrapper">
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+Yoseli+%26+Bryan&dates=20260828T190000/20260829T020000&details=¡Acompáñanos+a+celebrar+nuestra+boda!+Por+favor+confirma+tu+asistencia.&location=Jardín+y+Terraza+Puerta+al+Paraíso,+C.+España+8451,+Juárez,+22040+Tijuana,+B.C.&sf=true&output=xml" 
+                   target="_blank" class="btn-calendar">
+                    📅 Agregar al Calendario
+                </a>
+            </div>
         </section>
 
         <section class="gallery-section">
@@ -276,7 +285,7 @@
                 document.getElementById('welcome-screen').style.display = 'none';
                 document.getElementById('music-player').style.display = 'flex';
                 
-                // Activa la animación del texto de forma segura al abrirse
+                // Activa la animación del texto correctamente al abrirse
                 document.getElementById('animated-date').classList.add('start-typing');
             }, 1000);
             music.play().catch(e => console.log("Audio diferido por políticas del navegador"));
