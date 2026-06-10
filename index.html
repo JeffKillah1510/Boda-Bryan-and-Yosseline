@@ -1,3 +1,8 @@
+Aquí tienes todo tu código limpio y corregido. He implementado la Opción B (el truco del iframe oculto), ya que es la mejor manera de que tus invitados confirmen asistencia con un solo clic sin salirse de tu página web y sin que los navegadores te bloqueen la petición por seguridad.
+
+También corregí el detalle de la extensión en la primera imagen (foto1.jpg.jpeg) para que cargue perfectamente desde el inicio.
+
+HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -340,6 +345,8 @@
 </head>
 <body>
 
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(typeof iframeCargado !== 'undefined') { iframeCargado(); }"></iframe>
+
     <div id="welcome-screen">
         <h2 style="font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; color: #777; margin-bottom: 10px;">Nuestra Boda</h2>
         <div class="names-cursive">Yoseli<span class="ampersand">&</span>Bryan</div>
@@ -408,7 +415,7 @@
         <section class="gallery-section">
             <div class="gallery-grid">
                 <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <img src="foto1.pjg.jpeg" onerror="this.src='foto1.jpg.jpeg'; this.onerror=function(){this.src='foto1.jpg';};" class="gallery-item gallery-wide" alt="Bryan con traje">
+                    <img src="foto1.jpg.jpeg" onerror="this.onerror=function(){this.src='foto1.jpg';};" class="gallery-item gallery-wide" alt="Bryan con traje">
                     <img src="foto2.jpg.jpeg" class="gallery-item" style="height: 130px;" alt="Yoseli">
                 </div>
                 <img src="foto3.jpg.jpeg" class="gallery-item gallery-right" alt="Yoseli y Bryan">
@@ -459,6 +466,7 @@
     <script>
         const music = document.getElementById('bg-music');
         const playPauseBtn = document.getElementById('play-pause-btn');
+        let enviandoFormulario = false;
 
         function startInvitation() {
             document.getElementById('welcome-screen').style.opacity = '0';
@@ -499,39 +507,47 @@
             
             statusText.textContent = "Confirmando asistencia de forma automática... Por favor, espera.";
             actionsDiv.style.display = "none";
+            enviandoFormulario = true;
 
             // ==========================================
-            // CONFIGURACIÓN DE TU GOOGLE FORM (REEMPLAZAR AQUÍ)
+            // CONFIGURACIÓN DE TU GOOGLE FORM
             // ==========================================
-            const FORM_ID = "1FAIpQLSfXXXXX"; // Pon aquí el ID de tu formulario
-            const ENTRY_ID = "entry.123456789"; // Pon aquí el identificador de tu campo de opción
-            const VALOR_RESPUESTA = "Sí"; // El texto exacto de la opción afirmativa
+            const FORM_ID = "1FAIpQLSfXXXXX";   // Pon aquí tu ID real del formulario
+            const ENTRY_ID = "entry.123456789"; // Pon aquí tu entry ID real de la opción
+            const VALOR_RESPUESTA = "Sí";       // El texto exacto de la respuesta afirmativa
             
-            const formUrl = `https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`;
-            
-            const formData = new FormData();
-            formData.append(ENTRY_ID, VALOR_RESPUESTA);
+            // Creamos un formulario virtual e invisible en el documento
+            const formVirtual = document.createElement('form');
+            formVirtual.action = `https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`;
+            formVirtual.method = 'POST';
+            formVirtual.target = 'hidden_iframe'; // Dirige el envío al iframe invisible
 
-            fetch(formUrl, {
-                method: "POST",
-                mode: "no-cors",
-                body: formData
-            })
-            .then(() => {
+            const inputVirtual = document.createElement('input');
+            inputVirtual.type = 'hidden';
+            inputVirtual.name = ENTRY_ID;
+            inputVirtual.value = VALOR_RESPUESTA;
+
+            formVirtual.appendChild(inputVirtual);
+            document.body.appendChild(formVirtual);
+            
+            // Enviamos los datos silenciosamente a través del iframe
+            formVirtual.submit();
+            
+            // Quitamos el formulario virtual creado para mantener limpio el HTML
+            document.body.removeChild(formVirtual);
+        }
+
+        // Esta función se ejecuta automáticamente cuando el iframe recibe la respuesta de Google
+        function iframeCargado() {
+            if (enviandoFormulario) {
+                const statusText = document.getElementById('rsvp-status-text');
                 statusText.textContent = "¡Asistencia confirmada con éxito! Muchas gracias.";
                 
                 setTimeout(() => {
                     closeRsvpModal();
+                    enviandoFormulario = false;
                 }, 3000);
-            })
-            .catch((error) => {
-                console.error("Error al enviar el formulario:", error);
-                statusText.textContent = "Hubo un pequeño inconveniente. Intentando de forma alternativa...";
-                setTimeout(() => {
-                    window.open(`https://docs.google.com/forms/d/e/${FORM_ID}/viewform?${ENTRY_ID}=${encodeURIComponent(VALOR_RESPUESTA)}`, "_blank");
-                    closeRsvpModal();
-                }, 2000);
-            });
+            }
         }
 
         const eventDate = new Date(2026, 7, 28, 19, 0, 0).getTime();
