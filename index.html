@@ -1,10 +1,16 @@
+¡No te preocupes! Lo que está pasando es que el código fragmenta las letras al cargar la página, pero como el "Efecto Máquina de Escribir" arranca hasta que presionas el botón de "Abrir Invitación", si por alguna razón el texto se queda oculto o la animación tarda, se ve en blanco.
+
+Vamos a solucionarlo de una forma mucho más segura: el texto se verá normal desde el principio, y la animación se activará de inmediato mediante CSS nativo para que aparezca de manera súper fluida en cuanto se entra a la página, sin riesgo de que se quede invisible.
+
+Aquí tienes el código corregido. Copia todo y reemplaza tu index.html:
+
+HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boda Yoseli & Bryan</title>
-    <!-- Fuentes elegantes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Parisienne&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -67,32 +73,36 @@
         .hero .names-cursive { color: #f5f2eb; font-size: 3.8rem; }
         .hero .ampersand { color: #f5f2eb; font-size: 4.2rem; }
 
-        /* Contenedor Cuenta Regresiva y Nuevas Funciones */
+        /* Contenedor Cuenta Regresiva */
         .countdown-section { background-color: #ffffff; padding: 35px 25px 25px 25px; }
         .countdown { display: flex; justify-content: center; gap: 10px; margin-top: 25px; }
         .time-block { background: #faf8f5; border: 1px solid #e3ded4; padding: 12px 5px; border-radius: 8px; min-width: 75px; }
         .time-block span { display: block; font-size: 1.5rem; font-weight: 600; color: #1a1a1a; }
         .time-block label { font-size: 0.65rem; text-transform: uppercase; color: #777; letter-spacing: 1px; }
 
-        /* Efecto de escritura automática letra por letra */
+        /* NUEVO: Efecto de desvanecimiento suave para asegurar que las letras SIEMPRE salgan */
         .typing-container {
             font-size: 1.1rem;
             font-weight: 500;
             color: #b3966a;
             letter-spacing: 2px;
             text-transform: uppercase;
-            min-height: 24px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            display: inline-block;
         }
+        
         .char {
             display: inline-block;
             opacity: 0;
-            transform: translateY(5px);
-            transition: all 0.3s ease;
+            transform: translateY(10px);
+            animation: aparecerLetra 0.5s forwards;
         }
-        .char.fade-in {
-            opacity: 1;
-            transform: translateY(0);
+
+        @keyframes aparecerLetra {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Botón de Calendario */
@@ -175,7 +185,6 @@
 </head>
 <body>
 
-    <!-- BIENVENIDA -->
     <div id="welcome-screen">
         <h2 style="font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; color: #777; margin-bottom: 10px;">Nuestra Boda</h2>
         <div class="names-cursive">Yoseli<span class="ampersand">&</span>Bryan</div>
@@ -184,16 +193,13 @@
 
     <div class="container">
         
-        <!-- HERO (PORTADA) -->
         <section class="hero">
             <div class="hero-content">
                 <div class="names-cursive">Yoseli<span class="ampersand">&</span>Bryan</div>
             </div>
         </section>
 
-        <!-- SECCIÓN CUENTA REGRESIVA, FECHA MAQUINA ESCRIBIR Y CALENDARIO -->
         <section class="countdown-section">
-            <!-- El texto que aparecerá letra por letra -->
             <div class="typing-container" id="animated-date">Viernes 28 de Agosto 2026</div>
 
             <div class="countdown">
@@ -203,18 +209,15 @@
                 <div class="time-block"><span id="seconds">00</span><label>Seg</label></div>
             </div>
 
-            <!-- Botón para añadir directamente a Google Calendar -->
             <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+Yoseli+%26+Bryan&dates=20260828T190000/20260829T020000&details=¡Acompáñanos+a+celebrar+nuestra+boda!+Por+favor+confirma+tu+asistencia.&location=Jardín+y+Terraza+Puerta+al+Paraíso,+C.+España+8451,+Juárez,+22040+Tijuana,+B.C.&sf=true&output=xml" 
                target="_blank" class="btn-calendar">
                 📅 Agregar al Calendario
             </a>
         </section>
 
-        <!-- SECCIÓN DE FOTOS -->
         <section class="gallery-section">
             <div class="gallery-grid">
                 <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <!-- Foto de Bryan en traje -->
                     <img src="foto1.pjg.jpeg" onerror="this.src='foto1.jpg.jpeg'; this.onerror=function(){this.src='foto1.jpg';};" class="gallery-item gallery-wide" alt="Bryan con traje">
                     <img src="foto2.jpg.jpeg" class="gallery-item" style="height: 130px;" alt="Yoseli">
                 </div>
@@ -222,7 +225,6 @@
             </div>
         </section>
 
-        <!-- CRONOGRAMA -->
         <section class="cronograma-section">
             <h3 class="section-title" style="text-align: center; font-size: 1.4rem; font-weight: 400; letter-spacing: 4px;">CRONOGRAMA DEL EVENTO</h3>
             
@@ -235,7 +237,6 @@
             </div>
         </section>
 
-        <!-- UBICACIÓN -->
         <section class="dark-section">
             <h3 class="section-title">DÍA DEL EVENTO</h3>
             <p style="color: #b3966a; font-weight: 600; letter-spacing: 2px;">28 DE AGOSTO DE 2026 | 7:00 PM</p>
@@ -244,7 +245,6 @@
             <a href="http://maps.google.com/?q=C.+Espa%C3%B1a+8451,+Ju%C3%A1rez,+22040+Tijuana,+B.C." target="_blank" class="btn-action">Ver ubicación en mapa</a>
         </section>
 
-        <!-- RSVP -->
         <section class="dark-section" style="border-top: 1px solid #222;">
             <h3 class="section-title">RSVP</h3>
             <p style="font-size: 0.75rem; color: #b3966a; letter-spacing: 2px;">CONFIRMACIÓN DE ASISTENCIA</p>
@@ -252,7 +252,6 @@
             <a href="https://forms.gle/5vfDefBzx2xcrLyz9" target="_blank" class="btn-action btn-rsvp">Por favor de confirmar aquí</a>
         </section>
 
-        <!-- FINAL -->
         <section style="background-color: #f5f2eb; padding-bottom: 50px;">
             <h3 style="font-family: 'Alex Brush', cursive; font-size: 2.5rem; font-weight: 400; color: #1a1a1a;">Esperamos contar con tu presencia</h3>
             <img src="foto_final.jpg.jpeg" class="foto-final-img" alt="Yoseli & Bryan">
@@ -260,7 +259,6 @@
 
     </div>
 
-    <!-- REPRODUCTOR -->
     <div id="music-player" style="display: none;">
         <span class="music-title">🎵 Canción de Fondo</span>
         <button class="player-btn" id="play-pause-btn" onclick="toggleMusic()">❚❚</button>
@@ -272,7 +270,7 @@
         const music = document.getElementById('bg-music');
         const playPauseBtn = document.getElementById('play-pause-btn');
 
-        // Función para preparar el texto de la fecha separándolo por letras
+        // Modificado: Ahora separa el texto de manera segura e inmediata
         function setupTypewriter() {
             const container = document.getElementById('animated-date');
             const text = container.textContent;
@@ -280,33 +278,19 @@
             
             for (let i = 0; i < text.length; i++) {
                 const span = document.createElement('span');
-                // Si es un espacio, respetamos el espacio vacío
                 span.textContent = text[i] === ' ' ? '\u00A0' : text[i];
                 span.className = 'char';
+                // Añadimos el retraso directamente por CSS inline para que no falle
+                span.style.animationDelay = (i * 0.08) + 's';
                 container.appendChild(span);
             }
         }
-
-        // Función que inicia el efecto de máquina de escribir letra por letra
-        function startTypewriter() {
-            const chars = document.querySelectorAll('.char');
-            chars.forEach((char, index) => {
-                setTimeout(() => {
-                    char.classList.add('fade-in');
-                }, index * 90); // Controla la velocidad aquí (90ms por letra)
-            });
-        }
-
-        // Llamamos al setup apenas carga el documento para fragmentar el texto
-        setupTypewriter();
 
         function startInvitation() {
             document.getElementById('welcome-screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('welcome-screen').style.display = 'none';
                 document.getElementById('music-player').style.display = 'flex';
-                // La animación empieza justo cuando se abre la invitación
-                startTypewriter();
             }, 1000);
             music.play().catch(e => console.log("Audio diferido por políticas del navegador"));
         }
@@ -315,6 +299,9 @@
             if (music.paused) { music.play(); playPauseBtn.textContent = '❚❚'; }
             else { music.pause(); playPauseBtn.textContent = '▶'; }
         }
+
+        // Ejecutar separación de letras de inmediato al cargar la estructura
+        setupTypewriter();
 
         const eventDate = new Date(2026, 7, 28, 19, 0, 0).getTime();
         setInterval(function() {
