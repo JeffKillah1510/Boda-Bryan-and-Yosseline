@@ -134,7 +134,7 @@
         }
 
         /* ========================================================
-           ESTILOS DE LA VENTANA EMERGENTE (MODAL RECUADRO)
+           ESTILOS DE LAS VENTANAS EMERGENTES (MODALES)
         ======================================================== */
         .modal-overlay {
             position: fixed;
@@ -150,7 +150,7 @@
             display: flex;
         }
 
-        .calendar-modal {
+        .calendar-modal, .rsvp-modal {
             background-color: #f4f4f4;
             width: 280px;
             border-radius: 12px;
@@ -219,7 +219,70 @@
             fill: #555555;
         }
 
-        /* Fin de Estilos del Modal */
+        /* Estilos específicos para el cuadro de confirmación RSVP */
+        .rsvp-modal {
+            background-color: #ffffff;
+            text-align: center;
+            padding: 25px 20px;
+        }
+        
+        .rsvp-modal h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .rsvp-modal p {
+            font-size: 0.85rem;
+            color: #666666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .rsvp-buttons-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-modal-rsvp {
+            padding: 12px 25px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+        }
+
+        .btn-modal-yes {
+            background-color: #b3966a;
+            color: #ffffff;
+            border: 1px solid #b3966a;
+        }
+
+        .btn-modal-yes:hover {
+            background-color: #9c8055;
+            border-color: #9c8055;
+        }
+
+        .btn-modal-no {
+            background-color: #f0f0f0;
+            color: #555555;
+            border: 1px solid #f0f0f0;
+        }
+
+        .btn-modal-no:hover {
+            background-color: #e2e2e2;
+            border-color: #e2e2e2;
+        }
+
+        /* Fin de Estilos de los Modales */
 
         .section-title { font-size: 1.2rem; letter-spacing: 3px; color: #1a1a1a; margin-bottom: 25px; text-transform: uppercase; }
         
@@ -256,6 +319,7 @@
             color: #ffffff; 
             border: 1px solid #b3966a; 
             box-shadow: 0 4px 15px rgba(179, 150, 106, 0.3);
+            cursor: pointer;
         }
         .btn-rsvp:hover { 
             background-color: #ffffff; 
@@ -310,6 +374,7 @@
             </div>
         </section>
 
+        <!-- MODAL DE CALENDARIO -->
         <div id="calendarModalOverlay" class="modal-overlay" onclick="closeCalendarModal()">
             <div class="calendar-modal" onclick="event.stopPropagation()">
                 <div class="modal-options-list">
@@ -327,6 +392,18 @@
                     <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
                     Close
                 </button>
+            </div>
+        </div>
+
+        <!-- NUEVO MODAL DE PREGUNTA RSVP -->
+        <div id="rsvpModalOverlay" class="modal-overlay" onclick="closeRsvpModal()">
+            <div class="rsvp-modal" onclick="event.stopPropagation()">
+                <h4>¿Estás seguro en asistir a la boda?</h4>
+                <p>Nos haría muy felices contar con tu presencia en este día tan especial.</p>
+                <div class="rsvp-buttons-container">
+                    <button class="btn-modal-rsvp btn-modal-yes" onclick="confirmAttendance()">Sí</button>
+                    <button class="btn-modal-rsvp btn-modal-no" onclick="closeRsvpModal()">No</button>
+                </div>
             </div>
         </div>
 
@@ -364,7 +441,8 @@
             <h3 class="section-title">RSVP</h3>
             <p style="font-size: 0.75rem; color: #b3966a; letter-spacing: 2px;">CONFIRMACIÓN DE ASISTENCIA</p>
             <p style="font-size: 0.8rem; margin: 20px 0; color: #d5d5d5;">PARA NOSOTROS ES MUY IMPORTANTE COMPARTIR ESTE DÍA CONTIGO. POR FAVOR AYÚDANOS A CONFIRMAR TU ASISTENCIA ANTES DEL DÍA 10 DE AGOSTO DE 2026.</p>
-            <a href="https://forms.gle/5vfDefBzx2xcrLyz9" target="_blank" class="btn-action btn-rsvp">Por favor de confirmar aquí</a>
+            <!-- Se cambió el enlace directo 'href' por un evento 'onclick' para activar la confirmación -->
+            <button onclick="openRsvpModal()" class="btn-action btn-rsvp">Por favor de confirmar aquí</button>
         </section>
 
         <section style="background-color: #f5f2eb; padding-bottom: 50px;">
@@ -400,13 +478,32 @@
             else { music.pause(); playPauseBtn.textContent = '▶'; }
         }
 
-        // FUNCIONES CONTROLADORAS DEL MODAL FLOTANTE
+        // FUNCIONES CONTROLADORAS DEL MODAL FLOTANTE (CALENDARIO)
         function openCalendarModal() {
             document.getElementById('calendarModalOverlay').classList.add('show');
         }
 
         function closeCalendarModal() {
             document.getElementById('calendarModalOverlay').classList.remove('show');
+        }
+
+        // NUEVAS FUNCIONES CONTROLADORAS DEL MODAL RSVP
+        function openRsvpModal() {
+            document.getElementById('rsvpModalOverlay').classList.add('show');
+        }
+
+        function closeRsvpModal() {
+            document.getElementById('rsvpModalOverlay').classList.remove('show');
+        }
+
+        function confirmAttendance() {
+            closeRsvpModal();
+            
+            // NOTA PARA EL FUTURO: Aquí es donde implementaremos el pase digital
+            // para la persona y su acompañante antes de redirigir o en su lugar.
+            
+            // Por ahora, redirige directamente al Google Forms:
+            window.open("https://forms.gle/5vfDefBzx2xcrLyz9", "_blank");
         }
 
         const eventDate = new Date(2026, 7, 28, 19, 0, 0).getTime();
